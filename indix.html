@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrer Deg</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon"> <!-- Legg til denne linjen -->
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #71b7e6, #9b59b6);
+        }
+        .container {
+            background-color: white;
+            padding: 3rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 1.5rem;
+        }
+        .input-container {
+            display: flex;
+            flex-direction: column;
+        }
+        input[type="text"], input[type="tel"], input[type="password"] {
+            width: 100%;
+            padding: 0.75rem;
+            margin: 0.5rem 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            transition: border-color 0.3s;
+        }
+        input[type="text"]:focus, input[type="tel"]:focus, input[type="password"]:focus {
+            border-color: #007BFF;
+        }
+        button {
+            padding: 0.75rem 1rem;
+            border: none;
+            background-color: #007BFF;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+            margin: 0.5rem 0;
+        }
+        button:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+        .login-container {
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Registrer Deg</h1>
+        <form id="registerForm">
+            <div class="input-container">
+                <input type="text" id="fullname" placeholder="Fullt Navn" required>
+                <input type="tel" id="mobile" placeholder="Mobilnummer" required pattern="[0-9]{8}">
+                <button type="submit">Registrer</button>
+            </div>
+        </form>
+
+        <div class="login-container">
+            <h1>Logg Inn</h1>
+            <form id="loginForm">
+                <div class="input-container">
+                    <input type="text" id="username" placeholder="Brukernavn" required>
+                    <input type="password" id="password" placeholder="Passord" required>
+                    <button type="submit">Logg Inn</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('registerForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const fullname = document.getElementById('fullname').value;
+            const mobile = document.getElementById('mobile').value;
+            const registrants = JSON.parse(localStorage.getItem('registrants')) || [];
+
+            // Sjekk om mobilnummeret allerede er registrert
+            if (registrants.some(r => r.mobile === mobile)) {
+                alert('Dette mobilnummeret er allerede registrert.');
+                return;
+            }
+
+            registrants.push({ fullname, mobile, checkedIn: false });
+            localStorage.setItem('registrants', JSON.stringify(registrants));
+            alert('Registreringen er fullført!');
+            this.reset();
+        });
+
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            if (username === 'etterstad' && password === 'ETT-2024') {
+                window.location.href = 'view.html';
+            } else {
+                alert('Feil brukernavn eller passord!');
+            }
+        });
+    </script>
+</body>
+</html>
